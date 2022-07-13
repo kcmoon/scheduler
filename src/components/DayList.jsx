@@ -5,7 +5,7 @@ export default function DayList(props) {
 
   const { days, day: currentDay, setDay } = props;
 
-  const dayListComponentsArray = days.map((day) =>{
+  const mappedDays = days.map((day) =>{
 
     return (
       <DayListItem 
@@ -21,7 +21,7 @@ export default function DayList(props) {
 
   return (
     <ul>
-      {dayListComponentsArray}
+      {mappedDays}
     </ul>
   );
 
