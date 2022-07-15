@@ -1,6 +1,5 @@
 // Gets appointments for given day
 export function getAppointmentsForDay(state, day) {
-
   // created empty array to push filtered appointments
   let filteredAppointments = [];
   // filtered the days array of the state object to match the day provided and assigned object to variable filteredDayObj
@@ -18,5 +17,19 @@ export function getAppointmentsForDay(state, day) {
   });
 
   return filteredAppointments;
+};
+// Gets interview if object passed in state contains interviewer
+export function getInterview(state, interview) {
+  // if interviewer not present, return null
+  if (!interview) {
+    return null;
+  }
+  // set variable containing interviewer id => use to access the interviewer for object to be returned
+  const interviewerId = interview.interviewer;
+  const interviewObj = {
+    student: interview.student,
+    interviewer: state.interviewers[interviewerId]
+  };
 
-}
+  return interviewObj;
+};
