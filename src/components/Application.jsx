@@ -4,52 +4,58 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from "helpers/selectors";
 
 export default function Application(props) {
-  
   //function to update day state in the state object
-  const setDay = day => setState({ ...state, day });
-  
+  const setDay = (day) => setState({ ...state, day });
+
   // state object to hold all state
   const [state, setState] = useState({
-    day: 'Monday',
+    day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {}
-  })
-  
+    interviewers: {},
+  });
+
   // API request to obtain days, appointments data and set it to state
   useEffect(() => {
     Promise.all([
       axios.get(`/api/days`),
       axios.get(`/api/appointments`),
-      axios.get(`/api/interviewers`)
+      axios.get(`/api/interviewers`),
     ]).then((all) => {
-      setState(prev => ({
-        ...prev, 
+      setState((prev) => ({
+        ...prev,
         days: all[0].data,
         appointments: all[1].data,
-        interviewers: all[2].data
-      }))
+        interviewers: all[2].data,
+      }));
     });
   }, []);
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
-  
+
   // create Appointment Array with props to be passed
   const mappedAppointments = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
+    const interviewers = getInterviewersForDay(state, state.day);
+
     return (
-      <Appointment 
+      <Appointment
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        interviewers={interviewers}
       />
     );
   });
-  
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -60,11 +66,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList
-            days={state.days}
-            value={state.day}
-            onChange={setDay}
-          />
+          <DayList days={state.days} value={state.day} onChange={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
