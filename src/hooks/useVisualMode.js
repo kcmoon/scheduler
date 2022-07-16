@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function useVisualMode(initialMode) {
   // set mode state with inital value
@@ -31,3 +31,4 @@ export default function useVisualMode(initialMode) {
     back
   };
 };
+
