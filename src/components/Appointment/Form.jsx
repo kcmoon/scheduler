@@ -12,16 +12,16 @@ export default function Form(props) {
   const reset = () => {
     setStudent("") 
     setInterviewer(null)
-  }
+  };
 
   const cancel = () => {
     reset()
     onCancel()
-  }
+  };
 
   const save = () => {
     onSave(student, interviewer)
-  }
+  };
 
   return (
     <main className="appointment__card appointment__card--create">
