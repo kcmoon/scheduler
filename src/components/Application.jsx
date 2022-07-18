@@ -38,12 +38,25 @@ export default function Application(props) {
     });
   }, []);
 
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({...state, appointments});
+    console.log(id, interview);
+  };
+
   const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
 
   // create Appointment Array with props to be passed
   const mappedAppointments = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-    const interviewers = getInterviewersForDay(state, state.day);
 
     return (
       <Appointment
@@ -51,7 +64,8 @@ export default function Application(props) {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
-        interviewers={interviewers}
+        interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
       />
     );
   });
