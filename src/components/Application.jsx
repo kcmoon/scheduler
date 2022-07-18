@@ -38,17 +38,34 @@ export default function Application(props) {
     });
   }, []);
 
+  // Booking an interview when clicking save
   function bookInterview(id, interview) {
+
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
     };
+
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
-    setState({...state, appointments});
+
+    axios.put(`/api/appointments/${id}`, appointments[id])
+    .then(setState({...state, appointments}))
     console.log(id, interview);
+  };
+
+  // Cancelling an interview when clicking trash icon
+  function cancelInterview(id) {
+
+    const appointments = {
+      ...state.appointments, 
+      [id]: {...state.appointments[id], interview: null}
+    };
+
+    axios.delete(`/api/appointments/${id}`, state.appointments[id])
+    .then(setState({...state, appointments}))
   };
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
@@ -66,6 +83,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
