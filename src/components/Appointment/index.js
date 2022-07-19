@@ -7,6 +7,7 @@ import useVisualMode from "hooks/useVisualMode";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -15,6 +16,8 @@ const SAVING = "SAVING";
 const CONFIRM = "CONFIRM";
 const DELETE = "DELETE";
 const EDIT = "EDIT";
+const ERROR_DELETE = "ERROR_DELETE";
+const ERROR_SAVE = "ERROR_SAVE";
 
 export default function Appointment(props) {
 
@@ -28,8 +31,9 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview);
-    transition(SHOW);
+    props.bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch((error) => transition(ERROR_SAVE, true))
   };
 
   function removeAppointment() {
@@ -37,9 +41,10 @@ export default function Appointment(props) {
   };
 
   function deleteAppointment() {
-    props.cancelInterview(props.id);
-    transition(DELETE);
-    transition(EMPTY);
+    transition(DELETE, true);
+    props.cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch((error) => transition(ERROR_DELETE, true));
   };
 
   function onCancel() {
@@ -49,6 +54,8 @@ export default function Appointment(props) {
   function onEdit() {
     transition(EDIT);
   };
+
+  console.log("props.interview:", props.interview, mode)
 
   return (
     <article className="appointment">
@@ -66,27 +73,39 @@ export default function Appointment(props) {
       )}
 
       {mode === CREATE && 
-      <Form 
-        onCancel={onCancel} 
-        interviewers = {props.interviewers}
-        onSave={onSave}
-      />}
+        <Form 
+          onCancel={onCancel} 
+          interviewers = {props.interviewers}
+          onSave={onSave}
+        />}
 
       {mode === EDIT && 
-      <Form
-        student={props.interview.student}
-        interviewers={props.interviewers}
-        interviewer={props.interview.interviewer.id}
-        onSave={onSave}
-        onCancel={onCancel}
-      />}
+        <Form
+          student={props.interview.student}
+          interviewers={props.interviewers}
+          interviewer={props.interview.interviewer.id}
+          onSave={onSave}
+          onCancel={onCancel}
+        />}
 
       {mode === CONFIRM && 
-      <Confirm 
-        onCancel={onCancel} 
-        onConfirm={deleteAppointment} 
-        message={"Delete the Appointment?"}
-      />}
+        <Confirm 
+          onCancel={onCancel} 
+          onConfirm={deleteAppointment} 
+          message={"Delete the Appointment?"}
+        />}
+
+      {mode === ERROR_DELETE && 
+        <Error
+          message="An Error has occured while Deleting"
+          onClose={onCancel}
+        />}
+
+      {mode === ERROR_SAVE && 
+        <Error
+          message="An Error has occured while Saving"
+          onClose={onCancel}
+        />}
 
       {mode === SAVING && <Status message={"Saving"} />}
 
