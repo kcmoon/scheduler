@@ -8,7 +8,7 @@ export default function useApplicationData() {
     day: "Monday",
     days: [],
     appointments: {},
-    interviewers: {},
+    interviewers: {}
   });
 
    //function to update day state in the state object
@@ -30,6 +30,27 @@ export default function useApplicationData() {
     });
   }, []);
 
+  // Function to update the number of spots available for each day
+  const updateSpots = (state) => {
+    // Find the index of the day in the days array
+    const currentDayIndex = state.days.findIndex((day) => day.name === state.day);
+    // Find the day using the index
+    const currentDay = state.days[currentDayIndex];
+    // Determine the number of spots for the specific day
+    const spots = currentDay.appointments.filter(
+      (id) => !state.appointments[id].interview
+    ).length;
+    // Update the state of spots in the current day
+    const updatedDayObj = { ...currentDay, spots };
+    // Update the state of days array with the updated newly updated state of the current day
+    const updatedDaysArr = [...state.days];
+    updatedDaysArr[currentDayIndex] = updatedDayObj;
+    // Update the total state object with the newly updated days array
+    // const updatedState = { ...state, days: updatedDaysArr };
+  
+    return updatedDaysArr;
+  };
+
    // Booking an interview when clicking save
    function bookInterview(id, interview) {
     const appointment = {
@@ -40,12 +61,18 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+
     return axios.put(`/api/appointments/${id}`, appointments[id])
     .then(setState({...state, appointments}))
+    // Update the spots for each day
+      .then(setState((prev) => {
+        return {...prev, days: updateSpots(prev)}
+      }))
   };
 
     // Cancelling an interview when clicking trash icon
     async function cancelInterview(id) {
+
       await axios.delete(`/api/appointments/${id}`)
       const appointments = {
         ...state.appointments, 
@@ -53,6 +80,10 @@ export default function useApplicationData() {
       };
       setState((prev) => {
         return {...prev, appointments}
+      })
+      // Update the spots for each day
+      setState((prev) => {
+        return {...prev, days: updateSpots(prev)}
       })
     };
 
