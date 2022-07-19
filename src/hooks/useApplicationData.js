@@ -53,6 +53,7 @@ export default function useApplicationData() {
 
    // Booking an interview when clicking save
    function bookInterview(id, interview) {
+
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -61,7 +62,6 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-
     return axios.put(`/api/appointments/${id}`, appointments[id])
     .then(setState({...state, appointments}))
     // Update the spots for each day
@@ -70,22 +70,22 @@ export default function useApplicationData() {
       }))
   };
 
-    // Cancelling an interview when clicking trash icon
-    async function cancelInterview(id) {
+  // Cancelling an interview when clicking trash icon
+  async function cancelInterview(id) {
 
-      await axios.delete(`/api/appointments/${id}`)
-      const appointments = {
-        ...state.appointments, 
-        [id]: {...state.appointments[id], interview: null}
-      };
-      setState((prev) => {
-        return {...prev, appointments}
-      })
-      // Update the spots for each day
-      setState((prev) => {
-        return {...prev, days: updateSpots(prev)}
-      })
+    await axios.delete(`/api/appointments/${id}`)
+    const appointments = {
+      ...state.appointments, 
+      [id]: {...state.appointments[id], interview: null}
     };
+    setState((prev) => {
+      return {...prev, appointments}
+    })
+    // Update the spots for each day
+    setState((prev) => {
+      return {...prev, days: updateSpots(prev)}
+    })
+  };
 
   return {
     state,
@@ -93,5 +93,4 @@ export default function useApplicationData() {
     bookInterview,
     cancelInterview
   };
-
 }
