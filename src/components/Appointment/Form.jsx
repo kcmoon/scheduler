@@ -11,13 +11,14 @@ export default function Form(props) {
   const [error, setError] = useState("");
 
   const reset = () => {
-    setStudent("") 
-    setInterviewer(null)
+    setStudent("");
+    setInterviewer(null);
+    setError("");
   };
 
   const cancel = () => {
-    reset()
-    onCancel()
+    reset();
+    onCancel();
   };
   
   function validate() {
@@ -29,7 +30,8 @@ export default function Form(props) {
       setError("Please select an Interviewer");
       return;
     }
-    return onSave(student, interviewer);
+    onSave(student, interviewer);
+    setError("");
   };
 
   return (
