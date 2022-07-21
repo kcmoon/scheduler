@@ -1,46 +1,40 @@
 import React from "react";
-
-import { render, cleanup, waitForElement, fireEvent, getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, queryByText, queryByAltText } from "@testing-library/react";
-
+import { render, cleanup, waitForElement, fireEvent, getByText, getAllByTestId, getByAltText, getByPlaceholderText, queryByText, queryByAltText } from "@testing-library/react";
 import Application from "components/Application";
 import axios from "__mocks__/axios";
 
 afterEach(cleanup);
 
 describe("Application", () => {
+
   it("changes the schedule when a new day is selected", async () => {
     const { getByText } = render(<Application />);
-  
     await waitForElement(() => getByText("Monday"));
-  
     fireEvent.click(getByText("Tuesday"));
-  
     expect(getByText("Leopold Silvers")).toBeInTheDocument();
   });
 
   it("loads data, books an interview and reduces the spots remaining for the first day by 1", async () => {
+    // 1. Render the Application
     const { container } = render(<Application />);
-
+    // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
-
+    // 3. Click on "Add" button
     const appointments = getAllByTestId(container, "appointment");
-
     const appointment = appointments[0];
-
     fireEvent.click(getByAltText(appointment, "Add"));
-
+    // 4. Fill in Student name
     fireEvent.change(getByPlaceholderText(appointment, /Enter Student Name/i), {
       target: { value: "John Doe" }
     });
-
+    // 5. Select an Interviewer
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
-
+    // 6. Click Save
     fireEvent.click(getByText(appointment, "Save"));
-
+    // 7. Check for Saving Annimation
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
-
+    // 8. Check to see new appointment
     await waitForElement(() => getByText(appointment, "John Doe"));
-
     const day = getAllByTestId(container, "day").find(day =>
       queryByText(day, "Monday")
     );
