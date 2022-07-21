@@ -45,6 +45,7 @@
     "@testing-library/react": "^8.0.7",
     "@testing-library/react-hooks": "^8.0.1",
     "babel-loader": "^8.0.5",
+    "axios": "^0.27.2",
     "eslint": "^8.20.0",
     "eslint-plugin-react": "^7.30.1",
     "prop-types": "^15.8.1",
