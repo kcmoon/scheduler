@@ -12,9 +12,9 @@ Please install and enjoy the smooth and easy to use user-experience and all that
 
 ## Screenshots
 
-!["Screenshot of the Desktop View"](https://github.com/kcmoon/tweeter-kcm/blob/master/docs/Tweeter-Desktop.png?raw=true)
-!["Screenshot of Post Form Hidden"](https://github.com/kcmoon/tweeter-kcm/blob/master/docs/Tweeter-Post-Hidden.png?raw=true)
-!["Screenshot of Visible Post Form"](https://github.com/kcmoon/tweeter-kcm/blob/master/docs/Tweeter-Post-Visible.png?raw=true)
+!["Screenshot of the Appointment Form"](https://github.com/kcmoon/scheduler/blob/master/docs/appointment-form.png?raw=true)
+!["Screenshot of the Appointmen List"](https://github.com/kcmoon/scheduler/blob/master/docs/appointment-list.png?raw=true)
+!["Screenshot of Reactive Days List View"](https://github.com/kcmoon/scheduler/blob/master/docs/dayslist-reactive.png?raw=true)
 
 
 ## Setup
