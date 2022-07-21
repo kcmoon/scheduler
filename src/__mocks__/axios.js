@@ -1,4 +1,3 @@
-
 // Create fixed testing data (fixtures)
 const fixtures = {
   days: [
