@@ -67,24 +67,24 @@ export default function useApplicationData() {
     // Update the spots for each day
       .then(setState((prev) => {
         return {...prev, days: updateSpots(prev)}
-      }))
+      }));
   };
 
   // Cancelling an interview when clicking trash icon
   async function cancelInterview(id) {
 
-    await axios.delete(`/api/appointments/${id}`)
+    await axios.delete(`/api/appointments/${id}`);
     const appointments = {
       ...state.appointments, 
       [id]: {...state.appointments[id], interview: null}
     };
     setState((prev) => {
       return {...prev, appointments}
-    })
+    });
     // Update the spots for each day
     setState((prev) => {
       return {...prev, days: updateSpots(prev)}
-    })
+    });
   };
 
   return {

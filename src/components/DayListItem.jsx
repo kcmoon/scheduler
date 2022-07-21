@@ -13,7 +13,7 @@ export default function DayListItem(props) {
     if (spots === 0) {
       return "no spots remaining";
     }
-    return `${spots} spots remaining`
+    return `${spots} spots remaining`;
   };
 
   const dayClass = classNames("day-list__item", {
@@ -28,4 +28,4 @@ export default function DayListItem(props) {
     </li>
   );
 
-}
+};

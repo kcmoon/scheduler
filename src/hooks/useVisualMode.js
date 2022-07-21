@@ -18,7 +18,7 @@ export default function useVisualMode(initialMode) {
       // set state to new mode and add mode to history array
       setMode(newMode);
       setHistory([...history, newMode]);
-    }
+    };
   };
   // got back in history array by removing last mode 
   function back() {
@@ -26,10 +26,10 @@ export default function useVisualMode(initialMode) {
       return
     } else {
       const temp = history;
-      temp.pop()
-      setHistory(temp)
-      setMode(temp[temp.length - 1])
-    }
+      temp.pop();
+      setHistory(temp);
+      setMode(temp[temp.length - 1]);
+    };
   };
 
   return {
