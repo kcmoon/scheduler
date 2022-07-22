@@ -31,14 +31,14 @@ export default function useApplicationData() {
   }, []);
 
   // Function to update the number of spots available for each day
-  const updateSpots = (state) => {
+  const updateSpots = (state, appointments) => {
     // Find the index of the day in the days array
     const currentDayIndex = state.days.findIndex((day) => day.name === state.day);
     // Find the day using the index
     const currentDay = state.days[currentDayIndex];
     // Determine the number of spots for the specific day
     const spots = currentDay.appointments.filter(
-      (id) => !state.appointments[id].interview
+      (id) => !appointments[id].interview
     ).length;
     // Update the state of spots in the current day
     const updatedDayObj = { ...currentDay, spots };
@@ -62,9 +62,10 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const days = updateSpots(state, appointments);
     return axios.put(`/api/appointments/${id}`, appointments[id])
       .then(() => setState((prev) => {
-        return {...prev, days: updateSpots(prev), appointments}
+        return {...prev, days, appointments}
       }));
   };
 
@@ -74,11 +75,13 @@ export default function useApplicationData() {
       ...state.appointments, 
       [id]: {...state.appointments[id], interview: null}
     };
+    const days = updateSpots(state, appointments);
+
     return axios.delete(`/api/appointments/${id}`)
     // Update the spots for each day
     .then(
       () => setState((prev) => {
-      return {...prev, days: updateSpots(prev), appointments}
+      return {...prev, days, appointments}
     }))
   };
 
