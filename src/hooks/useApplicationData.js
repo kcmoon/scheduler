@@ -74,10 +74,10 @@ export default function useApplicationData() {
       ...state.appointments, 
       [id]: {...state.appointments[id], interview: null}
     };
-    axios.delete(`/api/appointments/${id}`)
+    return axios.delete(`/api/appointments/${id}`)
     // Update the spots for each day
     .then(
-      setState((prev) => {
+      () => setState((prev) => {
       return {...prev, days: updateSpots(prev), appointments}
     }))
   };
