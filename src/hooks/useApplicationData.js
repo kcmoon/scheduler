@@ -63,28 +63,23 @@ export default function useApplicationData() {
       [id]: appointment
     };
     return axios.put(`/api/appointments/${id}`, appointments[id])
-    .then(setState({...state, appointments}))
-    // Update the spots for each day
-      .then(setState((prev) => {
-        return {...prev, days: updateSpots(prev)}
+      .then(() => setState((prev) => {
+        return {...prev, days: updateSpots(prev), appointments}
       }));
   };
 
   // Cancelling an interview when clicking trash icon
-  async function cancelInterview(id) {
-
-    await axios.delete(`/api/appointments/${id}`);
+  function cancelInterview(id) {
     const appointments = {
       ...state.appointments, 
       [id]: {...state.appointments[id], interview: null}
     };
-    setState((prev) => {
-      return {...prev, appointments}
-    });
+    axios.delete(`/api/appointments/${id}`)
     // Update the spots for each day
-    setState((prev) => {
-      return {...prev, days: updateSpots(prev)}
-    });
+    .then(
+      setState((prev) => {
+      return {...prev, days: updateSpots(prev), appointments}
+    }))
   };
 
   return {
