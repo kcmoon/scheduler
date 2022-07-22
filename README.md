@@ -16,6 +16,17 @@ Please install and enjoy the smooth and easy to use user-experience and all that
 !["Screenshot of the Appointmen List"](https://github.com/kcmoon/scheduler/blob/master/docs/appointment-list.png?raw=true)
 !["Screenshot of Reactive Days List View"](https://github.com/kcmoon/scheduler/blob/master/docs/dayslist-reactive.png?raw=true)
 
+## Dependencies
+
+React
+Bable
+Axios
+Storybook
+Classnames
+Normalize.css
+Jest testing-library
+React testing-library
+React-hooks testing-library
 
 ## Setup
 
